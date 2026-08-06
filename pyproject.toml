@@ -1,0 +1,45 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rig-ai-engineering"
+version = "0.1.0"
+description = "RIG AI Engineering — Prompt Intelligence Engine"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+  { name = "Mike Rodgers", email = "mrodgersjs-web@users.noreply.github.com" },
+]
+keywords = ["prompt-engineering", "llm", "agent", "rig", "cli"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+rig-ai = "rig_ai.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/mrodgersjs-web/rig-ai-engineering"
+Repository = "https://github.com/mrodgersjs-web/rig-ai-engineering"
+Issues = "https://github.com/mrodgersjs-web/rig-ai-engineering/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["rig_ai"]
+
+[tool.pytest.ini_options]
+testpaths = ["test"]
+pythonpath = ["."]
