@@ -1,4 +1,5 @@
 <div align="center">
+<p align="center"><img src="docs/rig-ai-engineering-demo.gif" alt="rig-ai-engineering demo" width="720" /></p>
   <img src="assets/rig-ai-engineering-hero.png" width="100%" />
 </div>
 
