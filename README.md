@@ -26,7 +26,7 @@
 ## 60-second install
 
 ```bash
-pip install rig-ai-engineering
+pip install git+https://github.com/mrodgersjs-web/rig-ai-engineering.git
 ```
 
 ```bash
