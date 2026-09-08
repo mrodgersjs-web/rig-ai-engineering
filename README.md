@@ -13,8 +13,8 @@
 <div align="center">
 
 ![status](https://img.shields.io/badge/status-local--first-C8A96E?style=flat-square&labelColor=0A0806)
-![python](https://img.shields.io/badge/python-3.9%2B-C8A96E?style=flat-square&labelColor=0A0806)
-![deterministic](https://img.shields.io/badge/deterministic-yes-5B8C5A?style=flat-square&labelColor=0A0806)
+![python](https://img.shields.io/badge/python-3.10%2B-C8A96E?style=flat-square&labelColor=0A0806)
+[![CI](https://img.shields.io/github/actions/workflow/status/mrodgersjs-web/rig-ai-engineering/smoke.yml?branch=main)](https://github.com/mrodgersjs-web/rig-ai-engineering/actions/workflows/smoke.yml)
 ![license](https://img.shields.io/badge/license-MIT-C8A96E?style=flat-square&labelColor=0A0806)
 
 </div>
