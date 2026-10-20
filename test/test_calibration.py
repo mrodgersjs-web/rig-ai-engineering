@@ -15,6 +15,7 @@ CALIBRATION = Path(__file__).resolve().parent.parent / "examples" / "calibration
 
 def test_calibration_scores_match_expected() -> None:
     expected = json.loads((CALIBRATION / "expected.json").read_text(encoding="utf-8"))
+    expected.pop("_about", None)
     assert set(expected) == {"weak.txt", "solid.txt", "strong.txt"}
     for name, want in expected.items():
         prompt = (CALIBRATION / name).read_text(encoding="utf-8")
@@ -25,6 +26,7 @@ def test_calibration_scores_match_expected() -> None:
 
 def test_calibration_ladder_orders_quality() -> None:
     expected = json.loads((CALIBRATION / "expected.json").read_text(encoding="utf-8"))
+    expected.pop("_about", None)
     totals = [expected[n]["total"] for n in ("weak.txt", "solid.txt", "strong.txt")]
     assert totals[0] < totals[1] < totals[2]
     assert expected["strong.txt"]["grade"] == "A+"
