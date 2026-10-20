@@ -1,4 +1,6 @@
-"""Consistency tests: README claims must match real runs and real numbers."""
+"""Tests that run the CLI and compare its real output to the quoted README
+output and the calibration table, and that the changelog version matches
+pyproject."""
 
 import json
 import re
