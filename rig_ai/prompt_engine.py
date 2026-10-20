@@ -365,6 +365,8 @@ class PromptEngine:
         """Return the top templates matching the query."""
         templates = cls._load_templates()
         query_lower = query.lower()
+        if not query_lower.strip():
+            return {}
         query_words = set(re.findall(r"\b\w+\b", query_lower))
         # Add simple stems so "tests" matches "test".
         stems = {w[:-1] for w in query_words if len(w) > 3 and w.endswith("s")}
