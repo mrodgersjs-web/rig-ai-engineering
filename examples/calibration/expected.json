@@ -1,4 +1,5 @@
 {
+  "_about": "Scores measured by rig_ai.score() for each prompt in this folder. test/test_calibration.py asserts them.",
   "weak.txt": {
     "specificity": 0,
     "doctrine": 0,
