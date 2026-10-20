@@ -6,6 +6,7 @@ import sys
 from pathlib import Path
 
 from . import prompt_engine
+from .axes import AXES, GRADE_BANDS, rubric_text
 
 
 def _read_input(args) -> str:
@@ -30,7 +31,7 @@ def cmd_score(args) -> int:
     print(f"RIG Prompt Score: {result['total']}/40 ({result['grade']})")
     print()
     for axis in ("specificity", "doctrine", "context", "actionability"):
-        print(f"  {axis.capitalize():14} {result[axis]:2}/10 — {result['feedback'][axis]}")
+        print(f"  {axis.capitalize():14} {result[axis]:2}/10 - {result['feedback'][axis]}")
     return 0
 
 
@@ -98,12 +99,26 @@ def cmd_suggest(args) -> int:
     return 0
 
 
+def cmd_axes(_args) -> int:
+    if getattr(_args, "json", False):
+        print(json.dumps({
+            "axes": [a.to_dict() for a in AXES],
+            "grade_bands": [
+                {"min_total": floor, "grade": grade, "label": label}
+                for floor, grade, label in GRADE_BANDS
+            ],
+        }, indent=2))
+        return 0
+    print(rubric_text())
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         prog="rig-ai",
-        description="RIG AI Engineering — Prompt Intelligence Engine",
+        description="RIG AI Engineering - Prompt Intelligence Engine",
     )
-    parser.add_argument("--version", action="version", version="%(prog)s 0.1.0")
+    parser.add_argument("--version", action="version", version="%(prog)s 0.2.0")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     # score
@@ -137,6 +152,11 @@ def main(argv: list[str] | None = None) -> int:
     p_suggest.add_argument("query", nargs="?", help="Task description.")
     p_suggest.add_argument("--json", action="store_true", help="Output JSON.")
     p_suggest.set_defaults(func=cmd_suggest)
+
+    # axes
+    p_axes = subparsers.add_parser("axes", help="Print the 4-axis rubric and grade bands.")
+    p_axes.add_argument("--json", action="store_true", help="Output JSON.")
+    p_axes.set_defaults(func=cmd_axes)
 
     args = parser.parse_args(argv)
     return args.func(args)
