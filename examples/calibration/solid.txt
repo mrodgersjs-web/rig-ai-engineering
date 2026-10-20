@@ -1,0 +1,1 @@
+Refactor src/auth.py to use bcrypt for password hashing. Keep the existing test suite in tests/test_auth.py passing and add a test for the new hash format.

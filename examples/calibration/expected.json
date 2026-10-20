@@ -1,0 +1,26 @@
+{
+  "weak.txt": {
+    "specificity": 0,
+    "doctrine": 0,
+    "context": 0,
+    "actionability": 2,
+    "total": 2,
+    "grade": "F"
+  },
+  "solid.txt": {
+    "specificity": 6,
+    "doctrine": 0,
+    "context": 3,
+    "actionability": 9,
+    "total": 18,
+    "grade": "D"
+  },
+  "strong.txt": {
+    "specificity": 10,
+    "doctrine": 10,
+    "context": 8,
+    "actionability": 10,
+    "total": 38,
+    "grade": "A+"
+  }
+}
