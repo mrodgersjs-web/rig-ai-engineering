@@ -111,4 +111,4 @@ MIT. See [LICENSE](LICENSE).
 
 ---
 
-Built by Mike Rodgers · [rodgersintelligence.com](https://rodgersintelligence.com/)
+Built by Mike Rodgers · rodgersintelligence.com

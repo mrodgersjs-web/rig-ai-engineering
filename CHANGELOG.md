@@ -3,6 +3,40 @@
 All notable changes to this project are documented here.
 Format: [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [0.2.1] - 2026-10-19
+
+### Added
+
+- `.github/CODEOWNERS` assigning `*` to `@mrodgersjs-web`.
+- `.github/copilot-instructions.md` (2037 bytes): what the repository is, the
+  layout, the exact commands (`pip install -e '.[dev]'`, `ruff check .`,
+  `pytest -q`, `pytest -q --cov=rig_ai`, `rig-ai score -f
+  examples/calibration/strong.txt`), conventions (conventional commits, a test for
+  every change, calibration numbers only from a real score run, no secrets, no
+  machine paths) and the truth rule that every number in docs comes from a command
+  run in this repository.
+- `test/test_repo_hygiene.py`: 4 checks read from the files on disk that
+  `.github/CODEOWNERS` assigns `*` to `@mrodgersjs-web`, that
+  `.github/copilot-instructions.md` is non-empty, at most 8000 bytes and names a
+  test command, that `README.md` carries a `github/actions/workflow/status` badge,
+  the "Built by Mike Rodgers - rodgersintelligence.com" footer, a test command and
+  only clones `mrodgersjs-web/rig-ai-engineering`, and that every job under
+  `.github/workflows/` sets `timeout-minutes` and never sets `continue-on-error: true`.
+
+### Changed
+
+- `.github/workflows/ci.yml` and `.github/workflows/rig-lattice.yml`:
+  `timeout-minutes: 15` on every job.
+- `README.md`: footer is the plain literal "Built by Mike Rodgers -
+  rodgersintelligence.com".
+
+### Verified
+
+- Fresh venv `python3.12 -m venv`, `pip install -e '.[dev]'`, `ruff check .` clean,
+  `pytest -q --cov=rig_ai` 44 passed with 90 percent coverage, and
+  `rig-ai score -f examples/calibration/strong.txt` prints "RIG Prompt Score:
+  38/40 (A+)", the figure the README quotes.
+
 ## [0.2.0] - 2026-10-19
 
 ### Added
