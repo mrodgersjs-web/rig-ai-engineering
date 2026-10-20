@@ -46,7 +46,8 @@ testpaths = ["test"]
 pythonpath = ["."]
 
 [tool.ruff]
-line-length = 140
+# the marker regex tables in prompt_engine.py run long by design
+line-length = 220
 target-version = "py310"
 
 [tool.ruff.lint]
