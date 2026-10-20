@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/)
 
-Scores a prompt on four axes and rewrites the weak ones. Built for anyone who sends prompts to coding agents and wants a check before the run starts.
+Scores a prompt on four axes and rewrites the weak ones, offline and deterministic. Built for anyone who sends prompts to coding agents and wants a check before the run starts.
 
 ## Why this exists
 
@@ -66,7 +66,7 @@ flowchart LR
     F --> G[Prompt with criteria and verification]
 ```
 
-Definitions for every axis, marker and grade band live in `rig_ai/axes.py` and [docs/axes.md](docs/axes.md). Scoring uses regexes and word counts only: no model, no network.
+Definitions for every axis, marker and grade band live in `rig_ai/axes.py` and [docs/axes.md](docs/axes.md). Scoring uses regexes and word counts only: no model, no network, same score on every run.
 
 ## What it proves
 
