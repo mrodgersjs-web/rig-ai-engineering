@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 
-# Markers of high-quality prompts — tuned to reward concrete, actionable, contextualized prompts.
+# Markers of high-quality prompts - tuned to reward concrete, actionable, contextualized prompts.
 SPECIFICITY_MARKERS = {
     "numbers": r"\b\d+(?:\.\d+)?\b",
     "code_refs": r"\b(file|path|line|function|class|module|method|variable|snippet)\b",
@@ -37,12 +37,25 @@ CONTEXT_MARKERS = {
 }
 
 ACTIONABILITY_MARKERS = {
-    "action_verbs": r"\b(write|create|build|implement|refactor|fix|debug|optimize|add|remove|update|generate|produce|analyze|compare|evaluate|run|execute|ship|deploy|test|verify)\b",
+    "action_verbs": (
+        r"\b(write|create|build|implement|refactor|fix|debug|optimize|add|remove|"
+        r"update|generate|produce|analyze|compare|evaluate|run|execute|ship|deploy|test|verify)\b"
+    ),
     "sequence": r"\b(step|first|then|next|finally|after|before|once)\b",
     "conditionals": r"\b(if|when|unless|while|given|in case)\b",
     "negatives": r"\b(do not|don't|never|avoid|must not|should not)\b",
     "directives": r"^(?:You |Please |I need|I want|Can you|Write|Build|Implement|Fix|Refactor|Analyze|Compare)",
 }
+
+# Shared prompt fragments used by enhance().
+ACCEPTANCE_BLOCK = (
+    "\n\nAcceptance criteria:\n- Output meets the specified format."
+    "\n- Edge cases are handled.\n- Result is verified before declaring complete."
+)
+CONTEXT_BLOCK = (
+    "\n\nContext to include:\n- Relevant file paths or code snippets."
+    "\n- Any skills, prior session, or project state the agent should load."
+)
 
 COMMON_ISSUES = [
     (r"^(hi|hello|hey|please|can you|could you)\b", "Remove the conversational opener. Start with the objective."),
@@ -202,7 +215,9 @@ class PromptEngine:
             return f"Strong specificity ({', '.join(found)}). Add numbers or exact constraints if any are still missing."
         if score >= 5:
             return f"Moderate specificity ({', '.join(found or ['some detail'])}). Add file paths, line numbers, or exact output format."
-        return "Too vague. Add concrete references: file paths, data ranges, output schema, or acceptance criteria." if wc > 5 else "Too short to be specific. Expand with what, where, and in what format."
+        if wc > 5:
+            return "Too vague. Add concrete references: file paths, data ranges, output schema, or acceptance criteria."
+        return "Too short to be specific. Expand with what, where, and in what format."
 
     @staticmethod
     def _doctrine_feedback(score: int, found: list[str]) -> str:
@@ -237,7 +252,7 @@ class PromptEngine:
             raise TypeError("prompt must be a string")
         original = prompt.strip()
         if not original:
-            return "[Empty prompt — describe the objective, constraints, and expected output.]"
+            return "[Empty prompt - describe the objective, constraints, and expected output.]"
 
         result = cls.score(original)
         out = original
@@ -259,11 +274,11 @@ class PromptEngine:
 
         # Add acceptance criteria if missing.
         if "acceptance criteria" not in out.lower():
-            out += "\n\nAcceptance criteria:\n- Output meets the specified format.\n- Edge cases are handled.\n- Result is verified before declaring complete."
+            out += ACCEPTANCE_BLOCK
 
         # Add context guidance if missing.
         if result.context < 5 and not re.search(r"(#file:|@file:|/[^\s]+\.[a-z]+)", out, re.IGNORECASE):
-            out += "\n\nContext to include:\n- Relevant file paths or code snippets.\n- Any skills, prior session, or project state the agent should load."
+            out += CONTEXT_BLOCK
 
         # Add verification if missing.
         if not re.search(r"\b(verify|validate|check|test|ensure)\b", out, re.IGNORECASE):
@@ -378,7 +393,9 @@ class PromptEngine:
             tmpl_words = set(re.findall(r"\b\w+\b", tmpl_lower))
             overlap = len(query_words & tmpl_words)
             key_match = sum(1 for w in query_words if w in key_lower or key_lower in w)
-            title_match = 5 if any(w in key_lower for w in ("test", "debug", "refactor", "review", "design", "doc", "feature", "api", "security", "performance", "migration")) and query_lower in key_lower else 0
+            title_words = ("test", "debug", "refactor", "review", "design", "doc",
+                           "feature", "api", "security", "performance", "migration")
+            title_match = 5 if any(w in key_lower for w in title_words) and query_lower in key_lower else 0
             score = overlap * 2 + key_match * 3 + title_match
             if score > 0:
                 scored.append((score, key, tmpl))

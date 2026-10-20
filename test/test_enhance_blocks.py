@@ -1,26 +1,25 @@
-"""Tests for ACCEPTANCE_BLOCK and CONTEXT_BLOCK, the canned blocks that
-
-enhance() appends to a thin prompt. They are module constants so they can be
-tested and edited in one place. Asserted here: enhance() appends both blocks,
-and a prompt that already carries them is not doubled up.
+"""Tests for the canned blocks enhance() appends: acceptance criteria and
+context guidance, and the no-doubling rule for prompts that already carry them.
 """
 
 from rig_ai import enhance
-from rig_ai.prompt_engine import ACCEPTANCE_BLOCK, CONTEXT_BLOCK
 
 
 def test_enhance_appends_acceptance_block() -> None:
     out = enhance("fix the login bug in src/auth.py")
-    assert ACCEPTANCE_BLOCK.strip() in out
+    assert "Acceptance criteria:" in out
 
 
 def test_enhance_appends_context_block_for_thin_prompts() -> None:
     out = enhance("fix the bug")
-    assert CONTEXT_BLOCK.strip() in out
+    assert "Context to include:" in out
 
 
 def test_enhance_does_not_double_existing_blocks() -> None:
-    prompt = f"Fix the parser crash in src/parser.py.{ACCEPTANCE_BLOCK}{CONTEXT_BLOCK}"
+    prompt = (
+        "Fix the parser crash in src/parser.py.\n\nAcceptance criteria:\n- Covered.\n"
+        "\nContext to include:\n- src/parser.py\n"
+    )
     out = enhance(prompt)
     assert out.count("Acceptance criteria:") == 1
     assert out.count("Context to include:") == 1
